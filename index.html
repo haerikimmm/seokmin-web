@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seokmin Park, Maker</title>
+<meta name="description" content="Seokmin Park. Metalsmith, digital fabricator, welder. Seoul.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Stack+Sans+Text:wght@200..700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   SEOKMIN PARK, editorial spread
+   Display : VT323            (pixel / terminal, the digital half)
+   Body    : Stack Sans Text  (200–700 variable)
+   White page. The photographs are the only colour.
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#ffffff; --fg:#0b0b0b; --mid:#8d8d8d; --hair:#e4e4e4; --mark:#d8442c;
+  --sel:#0b0b0b; --selfg:#ffffff;
+  /* brushed steel; the specular band stops well short of white so the
+     word stays legible at body size on a white page */
+  --metal:linear-gradient(96deg,
+    #1e2226 0%,  #4c545c 12%, #191d21 22%, #6b737b 32%,
+    #aab2ba 40%, #c3cbd3 44%, #7c848c 50%, #24292e 61%,
+    #545c64 73%, #1b1f23 86%, #3f464d 100%);
+}
+[data-theme="dark"]{
+  --bg:#0b0b0b; --fg:#f2f0ec; --mid:#7c7c7c; --hair:#242424; --mark:#ff5a3d;
+  --sel:#f2f0ec; --selfg:#0b0b0b;
+  /* polished silver, bright enough to read on black */
+  --metal:linear-gradient(96deg,
+    #6f767e 0%,  #b9c1c9 11%, #7b838b 21%, #d6dee6 31%,
+    #ffffff 41%, #eef3f8 46%, #a8b0b8 53%, #767e86 64%,
+    #c6ced6 76%, #838b93 88%, #dfe6ed 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+::selection{background:var(--sel);color:var(--selfg)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:'Stack Sans Text',ui-sans-serif,system-ui,sans-serif;
+  font-weight:400;font-size:15px;line-height:1.62;
+  transition:background .45s ease,color .45s ease;
+  overflow-x:hidden;
+}
+.disp{font-family:'VT323',ui-monospace,monospace;font-weight:400}
+.lbl{font-weight:500;font-size:10px;letter-spacing:.1em;text-transform:uppercase;line-height:1.3}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ── top bar ───────────────────────────────────────────────── */
+.bar{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px clamp(22px,4.6vw,58px);
+  background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:blur(12px);
+  opacity:0;animation:fade .6s 1.9s forwards;
+}
+.bar .who{display:flex;gap:14px;align-items:baseline}
+.bar .who b{font-weight:600;letter-spacing:.02em;font-size:11px;text-transform:uppercase}
+.bar .who span{color:var(--mid)}
+.tools{display:flex;gap:6px}
+.tools button{
+  font-family:inherit;font-weight:500;font-size:10px;
+  letter-spacing:.1em;text-transform:uppercase;
+  background:none;border:1px solid var(--hair);color:var(--mid);
+  padding:6px 13px;cursor:pointer;border-radius:100px;transition:.22s;
+}
+.tools button:hover{color:var(--bg);background:var(--fg);border-color:var(--fg)}
+/* icon toggle: the button shows the theme it will switch TO */
+.tools button.icon{width:34px;height:34px;padding:0;display:grid;place-items:center;
+  color:var(--mid)}
+.tools button.icon:hover{color:var(--bg)}
+.ic{width:16px;height:16px;grid-area:1/1;
+  transition:transform .45s cubic-bezier(.34,1.5,.64,1),opacity .25s}
+[data-theme="light"] .ic.sun{opacity:0;transform:rotate(-90deg) scale(.5);pointer-events:none}
+[data-theme="dark"]  .ic.moon{opacity:0;transform:rotate(90deg) scale(.5);pointer-events:none}
+@keyframes fade{to{opacity:1}}
+
+/* ── the spread ────────────────────────────────────────────── */
+.spread{
+  position:relative;min-height:100svh;
+  padding:clamp(104px,14vh,180px) clamp(22px,4.6vw,58px) clamp(52px,9vh,110px);
+  max-width:1700px;margin:0 auto;
+  display:flex;flex-direction:column;justify-content:center;
+}
+/* faint centre gutter, the magazine tell */
+.gutter{position:absolute;top:14%;bottom:14%;left:50%;width:1px;background:var(--hair);
+  opacity:0;animation:fade 1s 1.7s forwards}
+
+.wordmark{
+  position:relative;z-index:4;text-align:center;
+  font-size:clamp(78px,19.5vw,330px);line-height:.78;letter-spacing:-.012em;
+  white-space:nowrap;pointer-events:none;font-weight:400;
+}
+.wordmark .ln{display:block}
+.wordmark .ch{display:inline-block;opacity:0}
+.wordmark .ch.on{opacity:1}
+.wordmark .cur{
+  display:inline-block;width:.52em;height:.7em;background:var(--fg);
+  transform:translateY(.02em);margin-left:.05em;animation:blink .85s steps(1) infinite}
+.wordmark .cur.done{animation:blink .85s steps(1) 3,fadeout .35s 2.4s forwards}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes fadeout{to{opacity:0;width:0;margin:0}}
+
+.standfirst{
+  position:relative;z-index:5;margin:clamp(40px,6.5vh,76px) 0 0 auto;
+  max-width:355px;font-size:14.5px;line-height:1.6;
+  opacity:0;animation:fade .8s 2.1s forwards;
+}
+.standfirst .k{display:block;color:var(--mid);margin-bottom:9px}
+/* "metalsmith" arrives as brushed silver and settles into the text colour.
+   The flat colour sits in a ::before layer that fades IN over the gradient,
+   because a gradient cannot transition into a colour. Hover brings the metal back. */
+.standfirst .heat{position:relative;display:inline-block;font-weight:600}
+.standfirst .heat::before{
+  content:attr(data-word);position:absolute;left:0;top:0;white-space:nowrap;
+  color:var(--fg);-webkit-text-fill-color:var(--fg);
+  opacity:0;transition:opacity 1.5s cubic-bezier(.33,0,.2,1);
+}
+.standfirst .heat.settled::before{opacity:1}
+.standfirst .heat.settled:hover::before{opacity:0;transition:opacity .3s ease}
+/* fall back to plain text where background-clip:text is unsupported */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .standfirst .heat{
+    background-image:var(--metal);background-size:172% 100%;background-position:52% 50%;
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+  }
+  .standfirst .heat.sheen{animation:sheen 2.1s cubic-bezier(.42,0,.25,1)}
+}
+@keyframes sheen{from{background-position:100% 50%}to{background-position:52% 50%}}
+
+/* ── artifacts pinned around the letterforms ───────────────── */
+.artifact{position:absolute;z-index:6;opacity:0;transform:translateY(14px)}
+.artifact.in{animation:pop .75s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+/* "behind" tucks the photo under the giant letters but keeps its caption readable */
+.artifact.behind{z-index:auto}
+.artifact.behind .ph{position:relative;z-index:-1}
+.artifact.behind figcaption{position:relative;z-index:5}
+.artifact .ph{box-shadow:inset 0 0 0 1px var(--hair)}
+.artifact img{width:100%;height:100%;object-fit:cover;
+  transition:transform 1.1s cubic-bezier(.16,1,.3,1)}
+.artifact:hover img{transform:scale(1.05)}
+.artifact figcaption{display:flex;justify-content:space-between;gap:10px;
+  margin-top:6px;color:var(--mid);
+  /* knockout so a caption stays legible where it crosses a letterform */
+  background:var(--bg);padding:3px 0}
+.artifact figcaption .n{color:var(--fg)}
+/* hovering one artifact quiets the whole spread */
+.spread.focus .artifact:not(:hover){opacity:.22}
+.spread.focus .wordmark{opacity:.14}
+.spread .artifact,.spread .wordmark{transition:opacity .45s ease}
+
+.a1{left:12.5%;top:9%; width:clamp(96px,11.5vw,178px)}
+.a2{left:2.5%; top:43%;width:clamp(86px,9.5vw,146px)}
+.a3{left:25%;  top:60%;width:clamp(90px,10.5vw,158px)}
+.a4{left:44%;  top:8%; width:clamp(84px,9vw,140px)}
+/* a5 stays left of the standfirst column at every width */
+.a5{left:46%;  top:71%;width:clamp(96px,10vw,150px)}
+.a6{right:2.5%;top:23%;width:clamp(100px,12vw,182px)}
+.a7{right:18%; top:7%; width:clamp(80px,8.5vw,128px)}
+.a8{left:4%;   top:66%;width:clamp(78px,8vw,124px)}
+
+/* ── section scaffolding ───────────────────────────────────── */
+.sec{max-width:1700px;margin:0 auto;padding:0 clamp(22px,4.6vw,58px)}
+.rule{border-top:1px solid var(--fg);padding-top:16px;margin-top:clamp(96px,15vh,180px);
+  display:flex;justify-content:space-between;align-items:baseline;gap:18px}
+.rule h2{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.rule .c{color:var(--mid)}
+
+/* ── index of work ─────────────────────────────────────────── */
+.works{margin-top:clamp(42px,6.5vh,76px)}
+.work{
+  display:grid;grid-template-columns:clamp(56px,7vw,110px) 1fr auto;
+  gap:clamp(14px,3vw,40px);align-items:start;
+  padding:clamp(32px,4.8vh,56px) 0;border-bottom:1px solid var(--hair);
+}
+.work .num{font-size:clamp(30px,4.6vw,62px);line-height:.8;color:var(--mid);transition:color .3s}
+.work:hover .num{color:var(--mark)}
+.work h3{font-size:clamp(21px,3.1vw,42px);font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.work .meta{color:var(--mid);margin-top:13px;max-width:56ch;font-size:13.5px;line-height:1.55}
+.work .yr{color:var(--mid);white-space:nowrap;padding-top:5px}
+.work .thumbs{display:flex;gap:7px;margin-top:20px;flex-wrap:wrap}
+.work .thumbs img{width:clamp(46px,5.4vw,74px);aspect-ratio:1;object-fit:cover;
+  filter:grayscale(1);opacity:.6;cursor:zoom-in;
+  transition:filter .35s,opacity .35s,transform .35s cubic-bezier(.16,1,.3,1)}
+.work:hover .thumbs img{filter:none;opacity:1}
+.work .thumbs img:hover{transform:translateY(-3px);box-shadow:0 0 0 1px var(--fg)}
+
+/* big preview that rides the cursor over the work index */
+.peek{position:fixed;z-index:80;pointer-events:none;
+  width:clamp(300px,33vw,480px);opacity:0;
+  transform:translateY(-50%) scale(.95);transform-origin:center;
+  transition:opacity .18s ease,transform .4s cubic-bezier(.16,1,.3,1)}
+.peek.on{opacity:1;transform:translateY(-50%) scale(1)}
+.peek .ph{overflow:hidden;background:var(--hair);box-shadow:0 24px 60px -18px rgba(0,0,0,.35)}
+[data-theme="dark"] .peek .ph{box-shadow:0 24px 60px -18px rgba(0,0,0,.9)}
+.peek img{width:100%;height:auto;display:block}
+.peek figcaption{display:flex;justify-content:space-between;gap:12px;
+  margin-top:7px;color:var(--mid);background:var(--bg);padding:3px 0}
+.peek figcaption .n{color:var(--fg)}
+@media(hover:none){.peek{display:none}.work .thumbs img{cursor:default}}
+.work:hover .thumbs img:nth-child(2){transition-delay:.04s}
+.work:hover .thumbs img:nth-child(3){transition-delay:.08s}
+.work:hover .thumbs img:nth-child(4){transition-delay:.12s}
+.work:hover .thumbs img:nth-child(5){transition-delay:.16s}
+
+/* ── plate grid (project detail) ───────────────────────────── */
+.plates{display:grid;grid-template-columns:repeat(12,1fr);
+  gap:clamp(16px,2.4vw,38px);margin-top:clamp(40px,6.5vh,74px)}
+.pl{opacity:0;transform:translateY(20px);
+  transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.pl.in{opacity:1;transform:none}
+.pl .ph{display:block;overflow:hidden;background:var(--hair)}
+.pl img{width:100%;height:100%;object-fit:cover;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.pl:hover img{transform:scale(1.035)}
+.pl figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:7px;color:var(--mid)}
+.pl figcaption .n{color:var(--fg)}
+.w4{grid-column:span 4}.w5{grid-column:span 5}.w6{grid-column:span 6}
+.w7{grid-column:span 7}.w8{grid-column:span 8}.w12{grid-column:span 12}
+.r43 .ph{aspect-ratio:4/3}.r34 .ph{aspect-ratio:3/4}.r21 .ph{aspect-ratio:2/1}
+.r32 .ph{aspect-ratio:3/2}.r23 .ph{aspect-ratio:2/3}
+
+.note{max-width:52ch;margin-top:clamp(38px,5.5vh,64px);font-size:14.5px;line-height:1.72;color:var(--mid)}
+
+/* ── about / cv ────────────────────────────────────────────── */
+.cv{display:grid;grid-template-columns:1fr 1fr;gap:clamp(34px,6vw,104px);
+  margin-top:clamp(42px,6.5vh,76px)}
+.bio{font-size:clamp(17px,2.1vw,26px);line-height:1.44;letter-spacing:-.015em;max-width:26ch}
+.rows .r{display:grid;grid-template-columns:96px 1fr;gap:16px;
+  padding:16px 0;border-bottom:1px solid var(--hair);align-items:baseline}
+.rows .r .k{color:var(--mid)}
+.rows .r .v{font-size:14px}
+.rows .r .v i{font-style:normal;color:var(--mid);display:block;margin-top:5px;font-size:12.5px}
+
+/* ── footer ────────────────────────────────────────────────── */
+footer{margin-top:clamp(96px,16vh,190px);
+  padding:clamp(42px,6.5vh,80px) clamp(22px,4.6vw,58px) clamp(36px,5vh,60px);
+  border-top:1px solid var(--fg);max-width:1700px;margin-inline:auto}
+.fnote{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--fg);margin-bottom:clamp(22px,3.5vh,40px);
+  display:flex;align-items:center;gap:14px}
+.fnote::after{content:'';flex:1;height:1px;background:var(--hair);max-width:180px}
+.fmark{font-size:clamp(42px,11vw,150px);line-height:.8;letter-spacing:-.01em}
+/* contact details stack in a single right-aligned column */
+.fbot{display:flex;flex-direction:column;align-items:flex-end;gap:10px;
+  margin-top:clamp(28px,4vh,48px);color:var(--mid);text-align:right}
+.fbot .mail{color:var(--fg);border-bottom:1px solid var(--hair);padding-bottom:2px;
+  transition:border-color .25s}
+.fbot .mail:hover{border-color:var(--fg)}
+.fbot .tel{transition:color .25s}
+.fbot .tel:hover{color:var(--fg)}
+
+/* ── responsive ────────────────────────────────────────────── */
+@media(max-width:900px){
+  .gutter{display:none}
+  .spread{display:block;padding-top:104px}
+  .wordmark{white-space:normal;font-size:clamp(56px,16vw,110px);text-align:left;margin-bottom:26px}
+  .standfirst{margin-left:0;max-width:none}
+  .artifact{position:static;width:auto!important;opacity:1;transform:none}
+  .artifacts-m{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:34px}
+  .spread.focus .artifact:not(:hover),.spread.focus .wordmark{opacity:1}
+  .work{grid-template-columns:44px 1fr}
+  .work .yr{grid-column:2;padding-top:0;margin-top:6px}
+  .plates>*{grid-column:span 6}
+  .plates .w12{grid-column:span 12}
+  .cv{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .artifact,.pl{opacity:1!important;transform:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="who lbl"><b>Seokmin Park</b><span>Maker · Seoul</span></div>
+  <div class="tools">
+    <button id="theme" class="icon" aria-label="Toggle colour theme">
+      <svg class="ic sun" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4.1"/>
+        <path d="M12 2.4v2.3M12 19.3v2.3M21.6 12h-2.3M4.7 12H2.4M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6M18.8 18.8l-1.6-1.6M6.8 6.8L5.2 5.2"/>
+      </svg>
+      <svg class="ic moon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.6 14.8A8.7 8.7 0 0 1 9.2 3.4a8.7 8.7 0 1 0 11.4 11.4Z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ══ SPREAD ══ -->
+<header class="spread" id="spread">
+  <div class="gutter"></div>
+  <h1 class="wordmark disp" id="wordmark"></h1>
+  <div class="standfirst">
+    <span class="k lbl">Seoul, Korea</span>
+    Trained as a <span class="heat" id="heat" data-word="metalsmith">metalsmith</span>, then spent two years running a public fab lab. Now works
+    between CNC, injection moulds and a TIG torch. The same problem in three materials.
+  </div>
+  <div class="artifacts-m" id="artifacts"></div>
+</header>
+
+<!-- ══ INDEX ══ -->
+<section class="sec" id="work">
+  <div class="rule"><h2>Selected work</h2></div>
+  <div class="works" id="works"></div>
+</section>
+
+<!-- ══ DETAIL: PLASTER ══ -->
+<section class="sec" id="detail-plaster">
+  <div class="rule"><h2>01 / Plaster &amp; microcement</h2><span class="c lbl">Seoul</span></div>
+  <div class="plates" id="platesPls"></div>
+  <p class="note">Microcement goes on in thin coats and gives you one window to work it.
+  The counter is the difficult piece: a folded plane with an inside corner and a long
+  unsupported edge, floated and burnished by hand so the arris stays sharp and the field
+  reads flat under raking light. No two square metres cure the same.</p>
+</section>
+
+<!-- ══ DETAIL: PRECIOUS PLASTIC ══ -->
+<section class="sec" id="detail">
+  <div class="rule"><h2>03 / Precious Plastic</h2><span class="c lbl">Seoul · Vientiane</span></div>
+  <div class="plates" id="plates"></div>
+  <p class="note">The mould is the real object. Every part starts as an aluminium block on the
+  CNC, and what comes out of it is shredded household plastic, melted, pressed, and cooled
+  into something with a second use. In Vientiane the machines themselves were the deliverable:
+  built on site from parts available there, handed over, still running. Recycling only scales
+  if the equipment does.</p>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="sec" id="about">
+  <div class="rule"><h2>About</h2></div>
+  <div class="cv">
+    <p class="bio">I studied metalwork, which taught me that a material tells you what it wants.
+    Digital fabrication, recycled plastic, structural welding: everything since has been
+    the same lesson in a different accent.</p>
+    <div class="rows" id="cv"></div>
+  </div>
+</section>
+
+<figure class="peek" id="peek">
+  <span class="ph"><img id="peekimg" alt=""></span>
+  <figcaption class="lbl"><span id="peekt"></span><span class="n" id="peekn"></span></figcaption>
+</figure>
+
+<footer>
+  <div class="fnote">Open to collaboration</div>
+  <div class="fmark disp">seokmin park</div>
+  <div class="fbot lbl">
+    <a class="mail" href="mailto:footman6548@gmail.com">footman6548@gmail.com</a>
+    <a class="tel" href="tel:+821050986548">+82 10 5098 6548</a>
+    <span>Seoul, Korea</span><span>© 2026</span>
+  </div>
+</footer>
+
+<script>
+const IMG='img/';
+const $=s=>document.querySelector(s);
+
+/* ── hero artifacts ─────────────────────────────────────────── */
+const ART=[
+ {c:'a1',f:'pp-img_0370', ar:'4/3', pl:'Seoul',     n:'07'},
+ {c:'a2',f:'pls-img_5453', ar:'3/2', pl:'Seoul',     n:'05',behind:1},
+ {c:'a3',f:'pp-img_0304', ar:'3/4', pl:'Seoul',     n:'12'},
+ {c:'a4',f:'edu-img_4212',ar:'3/4', pl:'Fab Lab',   n:'03',behind:1},
+ {c:'a5',f:'pp-img_6151', ar:'4/3', pl:'Vientiane', n:'34'},
+ {c:'a6',f:'edu-img_4311',ar:'3/4', pl:'Seoul',     n:'18'},
+ {c:'a7',f:'sk-img_4070', ar:'7/10',pl:'Studio',    n:'21'},
+ {c:'a8',f:'pp-img_0583', ar:'4/3', pl:'Vientiane', n:'41',behind:1},
+];
+$('#artifacts').innerHTML=ART.map((a,i)=>`
+<figure class="artifact ${a.c}${a.behind?' behind':''}" style="--d:${(.12+i*.08).toFixed(2)}s">
+  <span class="ph" style="display:block;aspect-ratio:${a.ar};overflow:hidden;background:var(--hair)">
+    <img src="${IMG}${a.f}-t.webp" alt="" loading="lazy" decoding="async">
+  </span>
+  <figcaption class="lbl"><span>${a.pl}</span><span class="n">${a.n}</span></figcaption>
+</figure>`).join('');
+
+/* ── index of work ──────────────────────────────────────────── */
+const WORK=[
+ {n:'01',t:'Plaster & microcement',yr:'2024-2025',
+  m:'Hand-troweled plaster and microcement through a café fit-out in Seoul: the folded bar counter, the wall field, the window returns. Every surface floated and burnished on site.',
+  th:['pls-img_5456','pls-img_5458','pls-img_5453','pls-img_5465','pls-img_5471']},
+ {n:'02',t:'Interior metal & framing',yr:'2024-2025',
+  m:'Structural and finish metalwork with Ibok Metal. Wall framing, light boxes, doors and stair carcassing, TIG and ARC, on sites for Samsung C&T, Hyundai E&C and Shinsegae.',
+  th:['mtl-img_6028','mtl-img_5630','mtl-img_8548','mtl-img_8636','ins-img_1092']},
+ {n:'03',t:'Precious Plastic',yr:'2020-2023',
+  m:'Plastic recycling programme at Seoul Innovation Fab Lab, and machine-building workshops with K-LAB Vientiane, Laos. Household waste in, usable parts out, on open-source machines a workshop can build for itself. CNC-milled aluminium moulds, injection and extrusion.',
+  th:['pp-img_0370','pp-img_9821','pp-img_0304','pp-img_6147','pp-img_0583']},
+ {n:'04',t:'Digital Fabrication Teaching',yr:'2019-2021',
+  m:'Over twenty courses for the public: Arduino, 2D/3D modelling, CNC and laser. Also MIT Fab Academy, \u201cHow to Make (Almost) Anything\u201d, one of under ten Korean graduates.',
+  th:['edu-img_5391','edu-img_5398','edu-img_5434','edu-img_1720','edu-img_5358']},
+ {n:'05',t:'Fab City Clock',yr:'2018',
+  m:'An installation for Seoul Innovation Park reading the city\u2019s self-sufficiency against the Fab City 2054 target: food, energy, civic engagement. Fab City, begun in Barcelona, argues that a metropolis built only to consume drains the regions that supply it.',
+  th:['edu-img_4311','edu-img_4310','edu-img_4331','edu-img_4351','sk-img_4326']},
+ {n:'06',t:'Metalwork & personal',yr:'Since 2013',
+  m:'Kookmin University, metal craft. Objects in brass, wood, acrylic and resin, the grounding for everything that came after.',
+  th:['sk-img_4070','sk-img_0312','sk-img_9604','sk-img_4069','sk-img_9608']},
+];
+$('#works').innerHTML=WORK.map(w=>`
+<article class="work">
+  <div class="num disp">${w.n}</div>
+  <div>
+    <h3>${w.t}</h3>
+    <p class="meta">${w.m}</p>
+    <div class="thumbs">${w.th.map((t,i)=>
+      `<img src="${IMG}${t}-t.webp" alt="" loading="lazy" decoding="async"
+            data-big="${IMG}${t}.webp" data-t="${w.t}" data-n="${String(i+1).padStart(2,'0')}">`
+      ).join('')}</div>
+  </div>
+  <div class="yr lbl">${w.yr}</div>
+</article>`).join('');
+
+/* ── project plates ─────────────────────────────────────────── */
+const PLATES=[
+ {f:'pp-img_0370',w:'w8', r:'r43',c:'Four-cavity aluminium moulds',       n:'01'},
+ {f:'pp-img_9821',w:'w4', r:'r34',c:'Toolpath, finished face',            n:'02'},
+ {f:'pp-img_0268',w:'w4', r:'r43',c:'Mould halves',                       n:'03'},
+ {f:'pp-img_0304',w:'w4', r:'r34',c:'First pull, blue HDPE',              n:'04'},
+ {f:'pp-img_7403',w:'w4', r:'r34',c:'Cavity, charged',                    n:'05'},
+ {f:'pp-img_6151',w:'w6', r:'r43',c:'Pressed sheet, mixed regrind',       n:'06'},
+ {f:'pp-img_6147',w:'w6', r:'r43',c:'Sheet on the platen',                n:'07'},
+ {f:'pp-img_0754',w:'w12',r:'r21',c:'Workshop day 1, K-LAB Vientiane',   n:'08'},
+ {f:'pp-img_0580',w:'w5', r:'r43',c:'Shredder build, on site',            n:'09'},
+ {f:'pp-img_0222',w:'w7', r:'r43',c:'Assembly, participants',             n:'10'},
+ {f:'pp-img_5422',w:'w7', r:'r43',c:'Welded frame, press bed',            n:'11'},
+ {f:'pp-img_0586',w:'w5', r:'r43',c:'Engraved face, Korean set',          n:'12'},
+];
+const PLATES_PLS=[
+ {f:'pls-img_5456',w:'w7', r:'r32',c:'Bar counter, folded plane',        n:'01'},
+ {f:'pls-img_5458',w:'w5', r:'r32',c:'Inside corner, burnished',        n:'02'},
+ {f:'pls-img_5453',w:'w5', r:'r32',c:'Field under raking light',        n:'03'},
+ {f:'pls-img_5460',w:'w7', r:'r32',c:'Long edge, unsupported',          n:'04'},
+ {f:'pls-img_5465',w:'w6', r:'r32',c:'Window return, block wall',       n:'05'},
+ {f:'pls-img_5463',w:'w6', r:'r32',c:'Sill, to the planting',           n:'06'},
+ {f:'pls-img_5462',w:'w12',r:'r32',c:'Room, counter in place',          n:'07'},
+ {f:'pls-img_5467',w:'w4', r:'r23',c:'Service end, finished',           n:'08'},
+ {f:'pls-img_5471',w:'w8', r:'r32',c:'Back bar, cured',                 n:'09'},
+ {f:'pls-img_5287',w:'w4', r:'r34',c:'On site',                          n:'10'},
+];
+const plate=p=>`
+<figure class="pl ${p.w} ${p.r}">
+  <span class="ph"><img src="${IMG}${p.f}.webp" alt="" loading="lazy" decoding="async"></span>
+  <figcaption class="lbl"><span>${p.c}</span><span class="n">${p.n}</span></figcaption>
+</figure>`;
+$('#platesPls').innerHTML=PLATES_PLS.map(plate).join('');
+
+$('#plates').innerHTML=PLATES.map(plate).join('');
+
+/* ── cv rows ────────────────────────────────────────────────── */
+const CV=[
+ {k:'2024-25',t:'Ibok Metal, metal fabricator',
+  s:'TIG/ARC welding · interior metal, light boxes, doors · Samsung C&amp;T, Hyundai E&amp;C, Shinsegae sites'},
+ {k:'2019-21',t:'Seoul Innovation Fab Lab, PM',
+  s:'2D/3D design lead · CNC, laser, 3D printing · space operations and public programmes'},
+ {k:'Course',t:'MIT Fab Academy',
+  s:'“How to Make (Almost) Anything”, 12 months, Neil Gershenfeld'},
+ {k:'Degree',t:'Kookmin University',s:'BFA, Metal Craft'},
+ {k:'Tools',t:'Rhino · Fusion 360 · Blender',
+  s:'Illustrator, Photoshop, DaVinci Resolve · CNC, laser, 3D print, TIG/ARC'},
+];
+$('#cv').innerHTML=CV.map(r=>`
+<div class="r"><span class="k lbl">${r.k}</span>
+  <span class="v">${r.t}<i>${r.s}</i></span></div>`).join('');
+
+/* ── "metalsmith": sheen sweep, on load and on hover ────────── */
+const heat=$('#heat');
+function sweep(){
+  heat.classList.remove('sheen');void heat.offsetWidth;heat.classList.add('sheen');
+}
+heat.addEventListener('pointerenter',sweep);
+heat.addEventListener('animationend',()=>heat.classList.remove('sheen'));
+
+/* ── wordmark types itself in, terminal-style ───────────────── */
+const wm=$('#wordmark');
+(function typeMark(text,speed){
+  const spans=[];
+  text.split(' ').forEach((word,li,arr)=>{
+    const ln=document.createElement('span');ln.className='ln';
+    [...word].forEach(ch=>{
+      const s=document.createElement('span');s.className='ch';s.textContent=ch;
+      ln.appendChild(s);spans.push(s)});
+    wm.appendChild(ln);
+    if(li===arr.length-1){
+      const cur=document.createElement('span');cur.className='cur';
+      ln.appendChild(cur);wm._cur=cur}
+  });
+  let i=0;
+  (function step(){
+    if(i<spans.length){spans[i++].classList.add('on');setTimeout(step,speed)}
+    else{
+      wm._cur.classList.add('done');
+      setTimeout(()=>wm._cur.remove(),3000);
+      setTimeout(()=>sweep(),1450);              /* sheen as the line fades in */
+      setTimeout(()=>heat.classList.add('settled'),2900);
+      document.querySelectorAll('.artifact').forEach(a=>{
+        a.style.animationDelay=getComputedStyle(a).getPropertyValue('--d');
+        a.classList.add('in')});
+    }
+  })();
+})('seokmin park',62);
+
+/* hovering an artifact quiets the spread */
+const spread=$('#spread');
+document.querySelectorAll('.artifact').forEach(a=>{
+  a.addEventListener('mouseenter',()=>spread.classList.add('focus'));
+  a.addEventListener('mouseleave',()=>spread.classList.remove('focus'));
+});
+
+/* ── hovering a work thumbnail opens it big beside the cursor ─ */
+if(matchMedia('(hover: hover)').matches){
+  const peek=$('#peek'),pimg=$('#peekimg'),pt=$('#peekt'),pn=$('#peekn');
+  let mx=innerWidth/2,my=innerHeight/2,cx=mx,cy=my,live=false;
+
+  document.querySelectorAll('.work .thumbs img').forEach(th=>{
+    th.addEventListener('pointerenter',()=>{
+      pimg.src=th.dataset.big;
+      pt.textContent=th.dataset.t;
+      pn.textContent=th.dataset.n;
+      const r=th.getBoundingClientRect();
+      if(!live){cx=r.right+30;cy=r.top+r.height/2}   /* start from the thumb, not the last spot */
+      live=true;peek.classList.add('on');
+    });
+    th.addEventListener('pointerleave',()=>{live=false;peek.classList.remove('on')});
+  });
+
+  addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY},{passive:true});
+  (function follow(){
+    if(live){
+      const w=peek.offsetWidth,h=peek.offsetHeight,pad=18;
+      /* flip to the left of the cursor when there is no room on the right */
+      let x=mx+34;
+      if(x+w>innerWidth-pad)x=mx-34-w;
+      x=Math.max(pad,Math.min(x,innerWidth-w-pad));
+      const y=Math.max(h/2+pad,Math.min(my,innerHeight-h/2-pad));
+      cx+=(x-cx)*.18;cy+=(y-cy)*.18;
+      peek.style.left=cx+'px';peek.style.top=cy+'px';
+    }
+    requestAnimationFrame(follow);
+  })();
+}
+
+/* ── scroll reveal ──────────────────────────────────────────── */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting){
+    const sibs=[...e.target.parentNode.children];
+    e.target.style.transitionDelay=((sibs.indexOf(e.target)%3)*80)+'ms';
+    e.target.classList.add('in');io.unobserve(e.target)}
+}),{threshold:.08,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.pl').forEach(p=>io.observe(p));
+
+/* ── theme: remembered, defaults to the OS setting ──────────── */
+const root=document.documentElement,btn=$('#theme');
+function setTheme(t,save){
+  root.dataset.theme=t;
+  btn.title=t==='dark'?'Switch to light':'Switch to dark';
+  if(save)try{localStorage.setItem('sp-theme',t)}catch(e){}
+}
+setTheme(
+  (()=>{try{return localStorage.getItem('sp-theme')}catch(e){return null}})()
+  || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'),
+false);
+btn.onclick=()=>setTheme(root.dataset.theme==='dark'?'light':'dark',true);
+</script>
+</body></html>
